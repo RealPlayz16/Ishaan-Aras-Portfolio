@@ -1,10 +1,10 @@
 "use client";
 
 const caps = [
-  { num: "01", title: "Design", desc: "CAD modeling in Fusion 360 and SolidWorks, custom PCB layout and hand-soldering — from concept to prototype.", items: ["CAD", "PCB", "Mechanical Fabrication"] },
+  { num: "01", title: "Design", desc: "CAD modeling in Fusion 360 and SolidWorks, custom PCB layout and hand-soldering. Converted simple concept to prototype.", items: ["CAD", "PCB", "Mechanical Fabrication"] },
   { num: "02", title: "Embed", desc: "Firmware in C/C++ for ESP32, Raspberry Pi, and Jetson. ROS2, Docker, and microcontroller integration.", items: ["ESP32", "Raspberry Pi", "Jetson", "Firmware"] },
-  { num: "03", title: "Perceive", desc: "Edge AI inference at sub-100ms. Object detection, pose estimation, and ToF sensor fusion.", items: ["OpenCV", "MediaPipe", "ToF", "Edge AI"] },
-  { num: "04", title: "Actuate", desc: "Closed-loop control of stepper motors, servo systems, and delta robot arms. Long-range LoRa telemetry.", items: ["Steppers", "Servos", "Delta Arms", "LoRa"] },
+  { num: "03", title: "Perceive", desc: "Edge AI inference at sub-500ms. Object detection, pose estimation, and ToF sensor fusion.", items: ["OpenCV", "MediaPipe", "ToF", "Edge AI"] },
+  { num: "04", title: "Actuate", desc: "Closed-loop control of stepper motors, industrial servos, and conveyor belt sorting system. Long-range LoRa telemetry.", items: ["Steppers", "Servos", "Conveyor Sorting", "LoRa"] },
 ];
 
 export default function Capabilities() {
