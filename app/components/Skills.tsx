@@ -23,7 +23,7 @@ const skills = [
   },
   {
     category: "Frameworks",
-    items: ["ROS2", "Docker", "Framer Motion"],
+    items: ["ROS2", "Docker"],
   },
 ];
 
