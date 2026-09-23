@@ -120,8 +120,8 @@ export default function Hero() {
           {[
             { val: "3×", label: "OSHWA Certified" },
             { val: "<100ms", label: "Edge AI latency" },
-            { val: "4", label: "Shipped projects" },
-            { val: "W2027", label: "Co-op available" },
+            { val: "4", label: "Projects" },
+            { val: "Winter 2027", label: "Co-op available" },
           ].map((s) => (
             <div key={s.label}>
               <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: "1.5rem", color: "var(--lavender)" }}>{s.val}</div>
