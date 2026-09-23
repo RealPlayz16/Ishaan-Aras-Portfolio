@@ -119,7 +119,7 @@ export default function Hero() {
         <div style={{ display: "flex", gap: "3rem", flexWrap: "wrap" }}>
           {[
             { val: "3×", label: "OSHWA Certified" },
-            { val: "<100ms", label: "Edge AI latency" },
+            { val: "<500ms", label: "Edge AI latency" },
             { val: "4", label: "Projects" },
             { val: "Winter 2027", label: "Co-op available" },
           ].map((s) => (
