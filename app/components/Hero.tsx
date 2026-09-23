@@ -73,7 +73,7 @@ export default function Hero() {
             fontWeight: 300,
           }}
         >
-          I build hardware that ships — embedded systems, robotics, and edge AI from schematic to deployment.
+          Embedded systems, robotics, automation, and edge AI. I take hardware from schematic to deployment.
         </p>
 
         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center", marginBottom: "4rem" }}>
