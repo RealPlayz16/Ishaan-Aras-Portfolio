@@ -13,7 +13,7 @@ export default function Contact() {
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
             <a
-              href="https://www.linkedin.com/in/ishaan-aras"
+              href="https://www.linkedin.com/in/ishaanaras"
               target="_blank"
               rel="noopener noreferrer"
               style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", color: "var(--text)", textDecoration: "none", fontSize: "0.9rem", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, transition: "color 0.2s" }}
@@ -23,12 +23,12 @@ export default function Contact() {
               <span style={{ color: "var(--lavender)" }}>↗</span> LinkedIn
             </a>
             <a
-              href="mailto:i2aras@uwaterloo.ca"
+              href="mailto:ishaan.aras@gmail.com"
               style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", color: "var(--text)", textDecoration: "none", fontSize: "0.9rem", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, transition: "color 0.2s" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "var(--lavender)")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text)")}
             >
-              <span style={{ color: "var(--lavender)" }}>↗</span> i2aras@uwaterloo.ca
+              <span style={{ color: "var(--lavender)" }}>↗</span> Mail
             </a>
           </div>
         </div>
