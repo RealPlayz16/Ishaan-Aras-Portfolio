@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Ishaan Aras — Mechatronics & Hardware Engineering",
-  description: "Portfolio of Ishaan Aras — embedded systems, robotics, hardware design. Seeking Winter 2027 co-op.",
+  title: "Ishaan Aras",
+  description: "Mechatronics engineering, embedded systems, robotics, and hardware design. University of Waterloo.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en">
       <body>{children}</body>

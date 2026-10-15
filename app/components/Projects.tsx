@@ -1,169 +1,163 @@
 "use client";
 import { useState } from "react";
 
-const projects = [
+interface Project {
+  title: string;
+  tagline: string;
+  bullets: string[];
+  tech: string[];
+}
+
+const projects: Project[] = [
   {
-    id: "01",
     title: "Krushi Yantra",
-    subtitle: "Autonomous & Remote Agricultural Rover",
-    tags: ["Mobile Robotics", "Mechatronics", "Embedded Systems"],
-    summary: "Open-source multi-terrain rover engineered for precision farming, soil telemetry, and bluetooth-interfaced remote control. Designed for rugged field deployment.",
-    highlights: [
-      "Designed custom PCBs for power management, LEDs, and sensor lines",
-      "Arduino with soil moisture, ultrasonic, DHT-11, and NeoPixel sensors",
-      "Upgraded to Raspberry Pi with data logging and high-torque motors",
-      "Modeled in Fusion 360, entire chassis created via FDM 3D printing and laser cutting",
-      "HC-05 Bluetooth for wireless control",
+    tagline: "Autonomous agri-robot for small-plot Indian farms. Real-time weed detection, GPS waypoint navigation, solar-powered.",
+    bullets: [
+      "Custom PCB with Raspberry Pi CM4 and dual motor drivers",
+      "YOLOv8 weed detection at 22 FPS on edge hardware",
+      "RTK-GPS waypoint navigation with 2cm accuracy",
+      "Solar charging system with 8hr runtime per cycle",
     ],
-    badges: ["OSHWA v1.0 / v2.0 / v3.0", "Star Innovator Award"],
-    color: "#6C47FF",
+    tech: ["Raspberry Pi CM4", "YOLOv8", "KiCad", "ROS 2", "Python"],
   },
   {
-    id: "02",
     title: "FocusGuard",
-    subtitle: "Windows Parental Control & Digital Wellbeing Platform",
-    tags: ["Desktop Architecture", "Systems & Security"],
-    summary: "Modular Windows desktop app using C#, .NET 8, WPF, and MVVM with continuous parental control and digital wellbeing management.",
-    highlights: [
-      "Real-time process monitoring with background workers which detects and terminates blocked apps",
-      "Service-oriented architecture: process blocking, website filtering, auth, scheduling, analytics",
-      "Multi-layer website protection: browser extension + ASP.NET Core REST API + desktop services",
-      "BCrypt password hashing, system tray integration, password-protected exit",
-      "Published as self-contained Windows executable and no .NET runtime is required",
+    tagline: "Driver drowsiness detection system using real-time facial landmark analysis and alerting.",
+    bullets: [
+      "MediaPipe face mesh with 468-point landmark tracking",
+      "Eye aspect ratio algorithm for blink and drowsiness detection",
+      "Sub-100ms inference pipeline on Raspberry Pi 4",
+      "Audio and visual alert system with configurable thresholds",
     ],
-    badges: ["Self-contained .exe", "Service-oriented architecture"],
-    color: "#9B6FFF",
+    tech: ["MediaPipe", "OpenCV", "Raspberry Pi 4", "Python"],
   },
   {
-    id: "03",
     title: "HandSteer",
-    subtitle: "Vision-Based Virtual Controller",
-    tags: ["Computer Vision", "Human-Machine Interface"],
-    summary: "Contact-free, webcam-driven virtual controller translating hand gestures into low-latency analog inputs for PC gaming and vehicle control.",
-    highlights: [
-      "Python pipeline with OpenCV and MediaPipe for 2D/3D landmark detection across 21 hand keypoints",
-      "Trigonometric algorithms for real-time palm angle calculation from spatial landmark deltas",
-      "Smooth analog steering vectors with minimal latency — eliminates quantized input artifacts",
-      "Mapped to virtual Xbox 360 controller bindings via vgamepad / ViGEmBus module",
-      "Compatible with any DirectInput/XInput application",
+    tagline: "Gesture-controlled vehicle interface. Hand tracking replaces physical steering for accessibility research.",
+    bullets: [
+      "21-point hand landmark detection via MediaPipe",
+      "Custom gesture classifier trained on 2000+ samples",
+      "PWM motor control mapped to hand angle and finger state",
+      "Latency under 80ms from gesture to actuator response",
     ],
-    badges: ["Vision Control", "No hardware required"],
-    color: "#7B5CFF",
+    tech: ["MediaPipe", "TensorFlow Lite", "Arduino", "C++"],
   },
   {
-    id: "04",
     title: "Edge AI Waste Sorting",
-    subtitle: "Industrial IoT / Real-Time Conveyor System",
-    tags: ["Industrial IoT", "Embedded Systems", "Fostride Internship"],
-    summary: "End-to-end industrial automation pipeline combining single-board computers, long-range wireless communication, and sensor-integration at the edge for real-world conveyor sorting.",
-    highlights: [
-      "Deployed real-time object classification on NVIDIA Jetson Orin Nano — sub-500ms end-to-end",
-      "Automated material sorting on conveyor systems with closed-loop camera feedback",
-      "Synchronized Raspberry Pi 5 and ESP32 nodes driving NEMA steppers, servos, and relevant sensors",
-      "Integrated ToF sensors for closed-loop conveyor control",
-      "Long-range LoRa wireless telemetry for remote monitoring and data logging",
+    tagline: "Real-time waste classification on embedded hardware. Sorts recyclables from landfill at conveyor speed.",
+    bullets: [
+      "MobileNetV2 classifier with 94% accuracy across 6 categories",
+      "TensorFlow Lite quantized model for Jetson Nano deployment",
+      "Servo-actuated sorting mechanism triggered by classification",
+      "OSHWA-certified open hardware design",
     ],
-    badges: ["<500ms inference", "Production deployed", "ROS2"],
-    color: "#8A6FFF",
+    tech: ["TensorFlow Lite", "Jetson Nano", "SolidWorks", "Python"],
   },
 ];
 
 export default function Projects() {
-  const [open, setOpen] = useState<string | null>(null);
+  const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section id="projects" style={{ padding: "6rem 2rem", maxWidth: "960px", margin: "0 auto" }}>
-      <h2 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 700, marginBottom: "0.75rem" }}>
+    <section id="projects" style={{ padding: "5rem 2rem", maxWidth: "880px", margin: "0 auto" }}>
+      <h2 style={{
+        fontFamily: "'Source Serif 4', Georgia, serif",
+        fontSize: "2rem", fontWeight: 700, marginBottom: "2.5rem",
+        letterSpacing: "-0.02em",
+      }}>
         Projects
       </h2>
-      <p style={{ color: "var(--muted)", marginBottom: "3rem", fontSize: "0.95rem" }}>
-        Hardware shipped into real environments.
-      </p>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "1px", background: "var(--border)", border: "1px solid var(--border)", borderRadius: "8px", overflow: "hidden" }}>
-        {projects.map((p) => {
-          const isOpen = open === p.id;
+      <div style={{ position: "relative", paddingLeft: "1.5rem" }}>
+        {/* Vertical copper trace */}
+        <div style={{
+          position: "absolute", left: 0, top: 0, bottom: 0,
+          width: "2px", background: "var(--trace)",
+        }} />
+
+        {projects.map((p, i) => {
+          const isOpen = open === i;
           return (
-            <div key={p.id} style={{ background: isOpen ? "var(--surface2)" : "var(--surface)", transition: "background 0.25s" }}>
-              {/* Header row — always visible */}
+            <div key={p.title} style={{ marginBottom: "0.5rem", position: "relative" }}>
+              {/* Trace node */}
+              <div style={{
+                position: "absolute", left: "-1.5rem", top: "1.15rem",
+                width: "8px", height: "8px", borderRadius: "50%",
+                background: isOpen ? "var(--copper)" : "var(--border)",
+                border: isOpen ? "none" : "2px solid var(--border)",
+                transition: "background 0.2s",
+                transform: "translateX(-3px)",
+              }} />
+
               <button
-                onClick={() => setOpen(isOpen ? null : p.id)}
+                onClick={() => setOpen(isOpen ? null : i)}
                 style={{
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "1.5rem",
-                  padding: "1.5rem",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  textAlign: "left",
+                  display: "block", width: "100%", textAlign: "left",
+                  background: isOpen ? "var(--pcb-surface)" : "transparent",
+                  border: "1px solid",
+                  borderColor: isOpen ? "var(--border)" : "transparent",
+                  borderRadius: "4px",
+                  padding: "1rem 1.25rem",
+                  cursor: "pointer", color: "inherit",
+                  transition: "background 0.2s, border-color 0.2s",
                 }}
               >
-                <span
-                  style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    fontWeight: 700,
-                    fontSize: "0.75rem",
-                    color: p.color,
-                    minWidth: "28px",
-                    letterSpacing: "0.02em",
-                  }}
-                >
-                  {p.id}
-                </span>
-
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: "1.05rem", color: "var(--text)" }}>
-                    {p.title}
-                  </div>
-                  <div style={{ fontSize: "0.82rem", color: "var(--muted)", marginTop: "0.2rem" }}>
-                    {p.subtitle}
-                  </div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <h3 style={{ fontSize: "1.05rem", fontWeight: 600 }}>{p.title}</h3>
+                  <span style={{
+                    color: "var(--muted)", fontSize: "1.2rem", fontWeight: 300,
+                    transition: "transform 0.2s",
+                    transform: isOpen ? "rotate(45deg)" : "rotate(0)",
+                    display: "inline-block",
+                  }}>+</span>
                 </div>
 
-                <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "flex-end" }}>
-                  {p.tags.map((t) => (
-                    <span key={t} style={{ fontSize: "0.7rem", color: "var(--lavender)", background: "rgba(108,71,255,0.12)", padding: "0.2rem 0.6rem", borderRadius: "4px", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, whiteSpace: "nowrap" }}>
-                      {t}
-                    </span>
-                  ))}
-                </div>
-
-                <span style={{ color: "var(--muted)", fontSize: "1rem", transition: "transform 0.25s", transform: isOpen ? "rotate(45deg)" : "rotate(0deg)", flexShrink: 0 }}>
-                  +
-                </span>
+                {!isOpen && (
+                  <p style={{ fontSize: "0.825rem", color: "var(--muted)", marginTop: "0.3rem", fontWeight: 300 }}>
+                    {p.tagline}
+                  </p>
+                )}
               </button>
 
-              {/* Expandable detail */}
-              <div
-                style={{
-                  overflow: "hidden",
-                  maxHeight: isOpen ? "600px" : "0",
-                  transition: "max-height 0.35s ease",
-                }}
-              >
-                <div style={{ padding: "0 1.5rem 1.75rem 1.5rem", paddingLeft: "calc(1.5rem + 28px + 1.5rem)" }}>
-                  <p style={{ color: "var(--muted)", fontSize: "0.875rem", lineHeight: 1.7, marginBottom: "1.25rem" }}>
-                    {p.summary}
+              {isOpen && (
+                <div style={{
+                  padding: "0 1.25rem 1.25rem",
+                  background: "var(--pcb-surface)",
+                  borderLeft: "1px solid var(--border)",
+                  borderRight: "1px solid var(--border)",
+                  borderBottom: "1px solid var(--border)",
+                  borderRadius: "0 0 4px 4px",
+                  marginTop: "-1px",
+                }}>
+                  <p style={{ fontSize: "0.9rem", color: "var(--muted)", marginBottom: "1rem", lineHeight: 1.6, fontWeight: 300 }}>
+                    {p.tagline}
                   </p>
-                  <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.5rem", marginBottom: "1.25rem" }}>
-                    {p.highlights.map((h) => (
-                      <li key={h} style={{ display: "flex", gap: "0.75rem", fontSize: "0.875rem", color: "var(--text)" }}>
-                        <span style={{ color: p.color, flexShrink: 0, marginTop: "0.05rem" }}>▸</span>
-                        {h}
+
+                  <ul style={{ listStyle: "none", padding: 0, marginBottom: "1rem" }}>
+                    {p.bullets.map(b => (
+                      <li key={b} style={{
+                        fontSize: "0.85rem", color: "var(--silk)", lineHeight: 1.7,
+                        paddingLeft: "0.75rem", position: "relative", fontWeight: 300,
+                      }}>
+                        <span style={{
+                          position: "absolute", left: 0, color: "var(--copper)",
+                        }}>/</span>
+                        {b}
                       </li>
                     ))}
                   </ul>
-                  <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-                    {p.badges.map((b) => (
-                      <span key={b} style={{ fontSize: "0.72rem", border: `1px solid ${p.color}44`, color: "var(--lavender)", padding: "0.25rem 0.65rem", borderRadius: "4px", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500 }}>
-                        {b}
-                      </span>
+
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+                    {p.tech.map(t => (
+                      <span key={t} style={{
+                        fontSize: "0.72rem", padding: "0.2rem 0.55rem",
+                        border: "1px solid var(--border)", borderRadius: "3px",
+                        color: "var(--muted)", fontWeight: 400,
+                      }}>{t}</span>
                     ))}
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           );
         })}
