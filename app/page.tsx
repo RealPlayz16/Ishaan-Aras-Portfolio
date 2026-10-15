@@ -1,3 +1,6 @@
+import SmoothScroll from "./components/SmoothScroll";
+import CursorGlow from "./components/CursorGlow";
+import ScrollProgress from "./components/ScrollProgress";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import Skills from "./components/Skills";
@@ -7,7 +10,10 @@ import Contact from "./components/Contact";
 
 export default function Home() {
   return (
-    <>
+    <SmoothScroll>
+      <CursorGlow />
+      <ScrollProgress />
+      <div className="noise" />
       <Nav />
       <main>
         <Hero />
@@ -16,6 +22,6 @@ export default function Home() {
         <Capabilities />
         <Contact />
       </main>
-    </>
+    </SmoothScroll>
   );
 }
