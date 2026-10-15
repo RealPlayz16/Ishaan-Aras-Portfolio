@@ -6,7 +6,6 @@ export const board = {
   name: "Ishaan Aras",
   model: "Mechatronics Engineering, University of Waterloo",
   revision: "1A",
-  stream: "Co-op Stream 4",
   tagline: "Embedded systems, robotics, and edge AI. I take hardware from schematic to deployment.",
   email: "i2aras@uwaterloo.ca",
   linkedin: "https://www.linkedin.com/in/ishaan-aras",
@@ -25,6 +24,156 @@ export const specs: { label: string; value: string }[] = [
 ];
 
 // ─────────────────────────────────────────────────────────────
+// Projects
+//
+// Each project declares the skills it used. That list is the single
+// source of truth for the link between this section and the pinout:
+// pins look up their projects from here rather than keeping a second
+// copy that could drift.
+// ─────────────────────────────────────────────────────────────
+
+export interface Project {
+  id: string;
+  name: string;
+  tagline: string;
+  category: string;
+  bus: string;
+  metric: string;
+  metricLabel: string;
+  summary: string;
+  lines: string[];
+  skills: string[];
+}
+
+export const projects: Project[] = [
+  {
+    id: "krushi-yantra",
+    name: "Krushi Yantra",
+    tagline: "A smarter way to grow.",
+    category: "Robotics",
+    bus: "Bus 001 Device 001",
+    metric: "22 FPS",
+    metricLabel: "on-device detection",
+    summary:
+      "Autonomous agri-robot for small-plot Indian farms. It finds weeds, navigates by GPS, and runs all day on solar.",
+    lines: [
+      "Custom multi-layer PCB carrying a Raspberry Pi CM4 and dual motor drivers",
+      "YOLOv8 weed detection at 22 FPS on edge hardware, no cloud round-trip",
+      "RTK-GPS waypoint navigation holding 2cm accuracy across a plot",
+      "Solar charging with an 8 hour runtime per cycle",
+    ],
+    skills: ["Python", "Raspberry Pi", "YOLOv8", "KiCad", "PCB Design", "Soldering", "ROS 2", "Linux"],
+  },
+  {
+    id: "focusguard",
+    name: "FocusGuard",
+    tagline: "Keeping eyes on the road.",
+    category: "Edge AI",
+    bus: "Bus 001 Device 002",
+    metric: "< 100 ms",
+    metricLabel: "inference latency",
+    summary:
+      "Driver drowsiness detection. It watches the eyes and raises an alarm before the driver knows they are going.",
+    lines: [
+      "MediaPipe face mesh tracking 468 landmarks in real time",
+      "Eye aspect ratio algorithm for blink rate and drowsiness onset",
+      "Sub-100ms inference pipeline on a Raspberry Pi 4, no accelerator",
+      "Audio and visual alerts with configurable thresholds per driver",
+    ],
+    skills: ["Python", "MediaPipe", "OpenCV", "Raspberry Pi", "Linux"],
+  },
+  {
+    id: "handsteer",
+    name: "HandSteer",
+    tagline: "A more human interface.",
+    category: "Robotics",
+    bus: "Bus 002 Device 001",
+    metric: "< 80 ms",
+    metricLabel: "gesture to actuator",
+    summary:
+      "Gesture-controlled vehicle interface. Hand tracking replaces the wheel, built for accessibility research.",
+    lines: [
+      "21-point hand landmark detection through MediaPipe",
+      "Custom gesture classifier trained on 2000+ labelled samples",
+      "PWM motor control mapped to hand angle and finger state",
+      "Under 80ms from gesture to actuator response",
+    ],
+    skills: ["C / C++", "MediaPipe", "TensorFlow Lite", "Arduino", "Signal Processing"],
+  },
+  {
+    id: "waste-sorting",
+    name: "Edge AI Waste Sorting",
+    tagline: "Less landfill. More possibility.",
+    category: "Edge AI",
+    bus: "Bus 002 Device 002",
+    metric: "94%",
+    metricLabel: "classification accuracy",
+    summary:
+      "Real-time waste classification on embedded hardware. It pulls recyclables off a moving conveyor at line speed.",
+    lines: [
+      "MobileNetV2 classifier at 94% accuracy across 6 waste categories",
+      "TensorFlow Lite quantised model deployed to a Jetson Nano",
+      "Servo-actuated sorting arm triggered on classification",
+      "OSHWA-certified open hardware design, schematics public",
+    ],
+    skills: ["Python", "TensorFlow Lite", "NVIDIA Jetson", "SolidWorks", "3D Printing", "Docker"],
+  },
+];
+
+// ─────────────────────────────────────────────────────────────
+// Skill groups
+// ─────────────────────────────────────────────────────────────
+
+export interface SkillGroup {
+  name: string;
+  label: string;
+  description: string;
+  color: string;
+}
+
+export const skillGroups: SkillGroup[] = [
+  {
+    name: "Languages",
+    label: "Talking to machines",
+    description: "From low-level firmware to vision pipelines and the interfaces on top of them.",
+    color: "#C51A4A",
+  },
+  {
+    name: "Hardware",
+    label: "Small boards, big ideas",
+    description: "The embedded platforms that turn software into something you can pick up.",
+    color: "#D9A842",
+  },
+  {
+    name: "Vision & AI",
+    label: "Giving machines perception",
+    description: "Real-time computer vision and efficient inference, running at the edge rather than in a datacentre.",
+    color: "#75A928",
+  },
+  {
+    name: "Electronics",
+    label: "Connecting the dots",
+    description: "Schematic through to assembled board, then measured and debugged on the bench.",
+    color: "#4D9FD6",
+  },
+  {
+    name: "CAD & Fabrication",
+    label: "Designed to be built",
+    description: "Mechanical design, board layout, and the rapid prototyping that catches mistakes early.",
+    color: "#B07BC4",
+  },
+  {
+    name: "Frameworks",
+    label: "The systems underneath",
+    description: "The robotics software and tooling that holds a build together once it leaves the bench.",
+    color: "#D4785A",
+  },
+];
+
+export const groupColor = (name: string) =>
+  skillGroups.find(g => g.name === name)?.color ?? "var(--silk-3)";
+
+// ─────────────────────────────────────────────────────────────
 // GPIO header — real Raspberry Pi 40-pin layout.
 // Power, ground and bus functions are accurate to the hardware.
 // Signal pins carry the skills.
@@ -38,7 +187,7 @@ export interface Pin {
   fn: string;             // real hardware function
   bcm?: number;           // BCM GPIO number
   skill?: string;         // mapped skill
-  group?: string;         // skill category
+  group?: string;         // skill group
   detail?: string;        // what he actually does with it
 }
 
@@ -61,7 +210,7 @@ export const pins: Pin[] = [
 
   { n: 9,  kind: "gnd", fn: "Ground" },
   { n: 10, kind: "signal", bcm: 15, fn: "GPIO15 / RXD", skill: "Raspberry Pi", group: "Hardware",
-    detail: "Main compute target. CM4 on custom carrier boards, Pi 4/5 for vision work, Docker + ROS 2 on 64-bit Linux." },
+    detail: "Main compute target. CM4 on custom carrier boards, Pi 4/5 for vision work, Docker and ROS 2 on 64-bit Linux." },
 
   { n: 11, kind: "signal", bcm: 17, fn: "GPIO17", skill: "ESP32", group: "Hardware",
     detail: "WiFi-connected sensor nodes. Deep-sleep power budgeting, OTA updates, MQTT telemetry." },
@@ -73,16 +222,16 @@ export const pins: Pin[] = [
   { n: 14, kind: "gnd", fn: "Ground" },
 
   { n: 15, kind: "signal", bcm: 22, fn: "GPIO22", skill: "OpenCV", group: "Vision & AI",
-    detail: "Preprocessing, calibration, and the classical CV that runs before a model does." },
+    detail: "Preprocessing, calibration, and the classical computer vision that runs before a model does." },
   { n: 16, kind: "signal", bcm: 23, fn: "GPIO23", skill: "YOLOv8", group: "Vision & AI",
-    detail: "Object detection on edge hardware. 22 FPS weed detection on a CM4 in Krushi Yantra." },
+    detail: "Object detection on edge hardware, tuned until it holds frame rate on a board that fits in your hand." },
 
   { n: 17, kind: "3v3", fn: "3V3 power" },
   { n: 18, kind: "signal", bcm: 24, fn: "GPIO24", skill: "TensorFlow Lite", group: "Vision & AI",
-    detail: "Quantised models for constrained targets. 94% accuracy waste classifier under 100ms." },
+    detail: "Quantised models for constrained targets, traded down until they fit the silicon and still hold accuracy." },
 
   { n: 19, kind: "signal", bcm: 10, fn: "GPIO10 / MOSI", skill: "MediaPipe", group: "Vision & AI",
-    detail: "Landmark tracking. 468-point face mesh for drowsiness detection, 21-point hand tracking for gesture control." },
+    detail: "Landmark tracking. Face mesh for drowsiness detection, hand tracking for gesture control." },
   { n: 20, kind: "gnd", fn: "Ground" },
 
   { n: 21, kind: "signal", bcm: 9,  fn: "GPIO9 / MISO", skill: "PCB Design", group: "Electronics",
@@ -93,11 +242,11 @@ export const pins: Pin[] = [
   { n: 23, kind: "signal", bcm: 11, fn: "GPIO11 / SCLK", skill: "Soldering", group: "Electronics",
     detail: "Through-hole and SMD down to 0603 by hand. Rework, reflow, and fixing boards that came back wrong." },
   { n: 24, kind: "signal", bcm: 8,  fn: "GPIO8 / CE0", skill: "Oscilloscope", group: "Electronics",
-    detail: "Debugging what the datasheet does not explain. Bus timing, PWM verification, chasing noise." },
+    detail: "Debugging what the datasheet does not explain. Bus timing, PWM verification, chasing noise to its source." },
 
   { n: 25, kind: "gnd", fn: "Ground" },
   { n: 26, kind: "signal", bcm: 7,  fn: "GPIO7 / CE1", skill: "KiCad", group: "CAD & Fabrication",
-    detail: "Board layout tool of choice. Open-source toolchain for open hardware." },
+    detail: "Board layout tool of choice. An open-source toolchain for open hardware." },
 
   { n: 27, kind: "id", fn: "ID_SD (reserved)" },
   { n: 28, kind: "id", fn: "ID_SC (reserved)" },
@@ -107,7 +256,7 @@ export const pins: Pin[] = [
   { n: 30, kind: "gnd", fn: "Ground" },
 
   { n: 31, kind: "signal", bcm: 6,  fn: "GPIO6", skill: "Fusion 360", group: "CAD & Fabrication",
-    detail: "Parametric modelling and CAM. Faster than SolidWorks for one-off brackets." },
+    detail: "Parametric modelling and CAM. Faster than SolidWorks for a one-off bracket." },
   { n: 32, kind: "signal", bcm: 12, fn: "GPIO12 / PWM0", skill: "3D Printing", group: "CAD & Fabrication",
     detail: "FDM in ABS and PETG for parts that take load and heat. Print, test, revise, print again." },
 
@@ -128,97 +277,35 @@ export const pins: Pin[] = [
   { n: 40, kind: "spare",  bcm: 21, fn: "GPIO21 / SCLK1" },
 ];
 
-export const pinGroups = [
-  "Languages",
-  "Hardware",
-  "Vision & AI",
-  "Electronics",
-  "CAD & Fabrication",
-  "Frameworks",
-] as const;
+// ─── derived links, computed once from projects[].skills ───
 
-// ─────────────────────────────────────────────────────────────
-// Peripherals — projects as attached devices
-// ─────────────────────────────────────────────────────────────
+/** Projects that used a given skill. */
+export const projectsUsingSkill = (skill: string): Project[] =>
+  projects.filter(p => p.skills.includes(skill));
 
-export interface Peripheral {
-  id: string;
-  bus: string;
-  name: string;
-  summary: string;
-  metric: string;
-  lines: string[];
-  stack: string[];
-}
+/** Physical pin numbers a project lit up. */
+export const pinsForProject = (p: Project): number[] =>
+  pins.filter(pin => pin.skill && p.skills.includes(pin.skill)).map(pin => pin.n);
 
-export const peripherals: Peripheral[] = [
-  {
-    id: "krushi-yantra",
-    bus: "Bus 001 Device 001",
-    name: "Krushi Yantra",
-    summary: "Autonomous agri-robot for small-plot Indian farms. Finds weeds, navigates by GPS, runs on solar.",
-    metric: "22 FPS detection, 2cm nav accuracy",
-    lines: [
-      "Custom multi-layer PCB carrying a Raspberry Pi CM4 and dual motor drivers",
-      "YOLOv8 weed detection at 22 FPS on edge hardware, no cloud round-trip",
-      "RTK-GPS waypoint navigation holding 2cm accuracy across a plot",
-      "Solar charging with an 8 hour runtime per cycle",
-    ],
-    stack: ["Raspberry Pi CM4", "YOLOv8", "KiCad", "ROS 2", "Python"],
-  },
-  {
-    id: "focusguard",
-    bus: "Bus 001 Device 002",
-    name: "FocusGuard",
-    summary: "Driver drowsiness detection. Watches the eyes and raises an alarm before the driver knows they are going.",
-    metric: "sub-100ms inference on a Pi 4",
-    lines: [
-      "MediaPipe face mesh tracking 468 landmarks in real time",
-      "Eye aspect ratio algorithm for blink rate and drowsiness onset",
-      "Sub-100ms inference pipeline on a Raspberry Pi 4, no accelerator",
-      "Audio and visual alerts with configurable thresholds per driver",
-    ],
-    stack: ["MediaPipe", "OpenCV", "Raspberry Pi 4", "Python"],
-  },
-  {
-    id: "handsteer",
-    bus: "Bus 002 Device 001",
-    name: "HandSteer",
-    summary: "Gesture-controlled vehicle interface. Hand tracking replaces the wheel, built for accessibility research.",
-    metric: "80ms gesture to actuator",
-    lines: [
-      "21-point hand landmark detection through MediaPipe",
-      "Custom gesture classifier trained on 2000+ labelled samples",
-      "PWM motor control mapped to hand angle and finger state",
-      "Under 80ms from gesture to actuator response",
-    ],
-    stack: ["MediaPipe", "TensorFlow Lite", "Arduino", "C++"],
-  },
-  {
-    id: "waste-sorting",
-    bus: "Bus 002 Device 002",
-    name: "Edge AI Waste Sorting",
-    summary: "Real-time waste classification on embedded hardware. Pulls recyclables off a moving conveyor.",
-    metric: "94% across 6 categories",
-    lines: [
-      "MobileNetV2 classifier at 94% accuracy across 6 waste categories",
-      "TensorFlow Lite quantised model deployed to a Jetson Nano",
-      "Servo-actuated sorting arm triggered on classification",
-      "OSHWA-certified open hardware design, schematics public",
-    ],
-    stack: ["TensorFlow Lite", "Jetson Nano", "SolidWorks", "Python"],
-  },
-];
+/** Pins belonging to a skill group. */
+export const pinsInGroup = (group: string): number[] =>
+  pins.filter(p => p.group === group).map(p => p.n);
+
+export const skillsInGroup = (group: string): Pin[] =>
+  pins.filter(p => p.group === group);
+
+export const pinBySkill = (skill: string): Pin | undefined =>
+  pins.find(p => p.skill === skill);
 
 // ─────────────────────────────────────────────────────────────
 // Kernel log — experience as dmesg
 // ─────────────────────────────────────────────────────────────
 
 export interface LogEntry {
-  t: string;        // monotonic timestamp
-  subsys: string;   // kernel subsystem style prefix
+  t: string;
+  subsys: string;
   msg: string;
-  level?: "ok" | "info" | "warn";
+  level?: "ok" | "info";
   detail?: string[];
 }
 
@@ -263,7 +350,7 @@ export const kernelLog: LogEntry[] = [
 ];
 
 // ─────────────────────────────────────────────────────────────
-// POST results — awards and recognition as a self-test
+// POST results
 // ─────────────────────────────────────────────────────────────
 
 export const postResults: { test: string; result: string }[] = [

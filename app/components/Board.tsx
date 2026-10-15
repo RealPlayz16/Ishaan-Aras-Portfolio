@@ -2,11 +2,12 @@
 import { useState } from "react";
 import { useReveal } from "../lib/useReveal";
 import BootSequence from "./BootSequence";
+import PowerRail from "./PowerRail";
 import Nav from "./Nav";
 import Hero from "./Hero";
 import Pinout from "./Pinout";
+import Projects from "./Projects";
 import KernelLog from "./KernelLog";
-import Peripherals from "./Peripherals";
 import Terminal from "./Terminal";
 import Contact from "./Contact";
 import CommandPalette from "./CommandPalette";
@@ -22,13 +23,14 @@ export default function Board() {
     <>
       {!booted && <BootSequence onDone={() => setBooted(true)} />}
 
+      <PowerRail />
       <Nav onOpenPalette={() => setPaletteOpen(true)} />
 
       <main>
         <Hero booted={booted} />
         <Pinout />
+        <Projects />
         <KernelLog />
-        <Peripherals />
         <Terminal />
         <Contact />
       </main>
