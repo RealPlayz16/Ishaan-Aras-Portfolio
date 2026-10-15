@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import { board, postResults } from "../lib/content";
 
@@ -19,7 +18,7 @@ export default function Contact() {
       <div className="shell">
         {/* POST results — recognition framed as a self-test */}
         <div className="rv">
-          <div className="section-label">06 / post</div>
+          <div className="section-label">05 / post</div>
           <h2 className="section-title">Self-test</h2>
           <div
             className="mono"
@@ -47,7 +46,7 @@ export default function Contact() {
 
         {/* Contact */}
         <div className="rv">
-          <div className="section-label">07 / interrupt</div>
+          <div className="section-label">06 / interrupt</div>
           <h2 className="section-title">Send an interrupt</h2>
           <p className="section-note" style={{ marginTop: "0.75rem" }}>
             {board.availability} is open and I am looking for embedded systems, robotics, and
@@ -126,7 +125,7 @@ export default function Contact() {
         >
           <span>{board.name} · rev {board.revision}</span>
           <span>·</span>
-          <span>built with Next.js, no UI kit</span>
+          <span>built with React and Vite, no UI kit</span>
           <span style={{ marginLeft: "auto" }}>halt</span>
         </footer>
       </div>

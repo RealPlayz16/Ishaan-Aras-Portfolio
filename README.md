@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ishaan Aras, portfolio
 
-## Getting Started
+An interactive portfolio built around one idea: the site is a Raspberry Pi. It boots, exposes a
+40-pin header, keeps a kernel log, and accepts a shell.
 
-First, run the development server:
+Live at [ishaanaras-portfolio.vercel.app](https://ishaanaras-portfolio.vercel.app/).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Run it
+
+```
+npm install
+npm run dev      # vite dev server
+npm run build    # typecheck, then production build to dist/
+npm run preview  # serve the production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Deploys automatically to Vercel on push to `main`. Config is in `vercel.json`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How it is put together
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`src/lib/content.ts` is the single source of truth. Every section, and every terminal command,
+reads from it. Each project declares the skills it used, and the pin-to-project links are derived
+from that one list rather than kept as a second copy, so the pinout and the builds section cannot
+drift apart.
 
-## Learn More
+`src/components/` holds one file per section plus the shared pieces:
 
-To learn more about Next.js, take a look at the following resources:
+- `BootSequence` runs a dmesg-style boot on first load. Escape skips it, and it only runs once per
+  browser session.
+- `PinHeader` renders the 40-pin header. Power rails, grounds, bus functions and BCM numbers are
+  accurate to real hardware. It takes a set of lit pins, so the same component serves the full
+  interactive board and the compact strip on each project.
+- `Pinout` sticks the board in place while the skill groups scroll past, lighting the matching pins
+  as each group reaches the reading line. Picking a skill isolates its pin and lists the builds that
+  used it.
+- `Projects` is the main section. Each build shows its metric, what it does, and which pins it lit.
+- `Terminal` is a working shell. `help` lists the commands.
+- `CommandPalette` is ⌘K / ctrl-K.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`src/lib/useScroll.ts` holds the scroll hooks. There is no animation library; scroll position is
+read with `requestAnimationFrame` and an `IntersectionObserver`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scope
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This is a browser simulation, not remote access to a Raspberry Pi. Terminal commands only read the
+portfolio data and move around the page. No command reaches a real shell, no pin controls hardware,
+and the SoC temperature in the status bar is decorative. Kernel timestamps are a design device, not
+employment dates.

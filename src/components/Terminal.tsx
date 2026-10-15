@@ -1,6 +1,5 @@
-"use client";
 import { useState, useRef, useEffect, useCallback } from "react";
-import { board, specs, peripherals, pins, kernelLog, postResults } from "../lib/content";
+import { board, specs, projects, pins, kernelLog, postResults } from "../lib/content";
 
 type Line = { kind: "in" | "out" | "ok" | "err" | "dim"; text: string };
 
@@ -62,8 +61,8 @@ export default function Terminal() {
           ...[
             ["neofetch", "board summary"],
             ["whoami", "who is running this"],
-            ["ls", "list peripherals (projects)"],
-            ["cat <name>", "read a peripheral in full"],
+            ["ls", "list the builds"],
+            ["cat <name>", "read a build in full"],
             ["skills", "everything on the GPIO header"],
             ["gpio readall", "dump the 40-pin header"],
             ["dmesg", "kernel log (experience)"],
@@ -104,9 +103,9 @@ export default function Terminal() {
       case "ls":
       case "lsusb":
         push([
-          ...peripherals.map(p => ({
+          ...projects.map(p => ({
             kind: "out" as const,
-            text: `${p.bus}: ${p.name}  ·  ${p.metric}`,
+            text: `${p.bus}: ${p.name}  ·  ${p.metric} ${p.metricLabel}`,
           })),
           { kind: "dim", text: "" },
           { kind: "dim", text: "use `cat <name>` for detail, e.g. cat krushi" },
@@ -115,25 +114,26 @@ export default function Terminal() {
 
       case "cat": {
         if (!arg) { push([{ kind: "err", text: "cat: missing operand" }]); break; }
-        const p = peripherals.find(
+        const p = projects.find(
           x => x.id.includes(arg) || x.name.toLowerCase().includes(arg)
         );
         if (!p) {
           push([
-            { kind: "err", text: `cat: ${arg}: No such device` },
-            { kind: "dim", text: "try `ls` to see what is attached" },
+            { kind: "err", text: `cat: ${arg}: No such build` },
+            { kind: "dim", text: "try `ls` to see the builds" },
           ]);
           break;
         }
         push([
           { kind: "ok", text: p.name },
-          { kind: "dim", text: p.bus + "  ·  " + p.metric },
+          { kind: "dim", text: p.tagline },
+          { kind: "dim", text: `${p.bus}  ·  ${p.metric} ${p.metricLabel}` },
           { kind: "dim", text: "" },
           { kind: "out", text: p.summary },
           { kind: "dim", text: "" },
           ...p.lines.map(l => ({ kind: "out" as const, text: `  / ${l}` })),
           { kind: "dim", text: "" },
-          { kind: "dim", text: "stack: " + p.stack.join(", ") },
+          { kind: "dim", text: "skills: " + p.skills.join(", ") },
         ]);
         break;
       }
@@ -268,7 +268,7 @@ export default function Terminal() {
     <section id="shell" className="section">
       <div className="shell">
         <div className="rv">
-          <div className="section-label">05 / shell</div>
+          <div className="section-label">04 / shell</div>
           <h2 className="section-title">Open a shell</h2>
           <p className="section-note">
             This one actually works. Every command reads from the same data as the rest of the page.

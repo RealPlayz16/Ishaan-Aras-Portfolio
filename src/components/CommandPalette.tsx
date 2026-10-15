@@ -1,4 +1,3 @@
-"use client";
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { board } from "../lib/content";
 
@@ -28,9 +27,9 @@ export default function CommandPalette({
 
   const actions: Action[] = useMemo(() => [
     { label: "Power on", hint: "top of board", group: "navigate", run: () => go("power-on") },
-    { label: "Pinout", hint: "skills", group: "navigate", run: () => go("pinout") },
+    { label: "Pinout", hint: "skills on the header", group: "navigate", run: () => go("pinout") },
     { label: "Kernel log", hint: "experience", group: "navigate", run: () => go("kernel-log") },
-    { label: "Peripherals", hint: "projects", group: "navigate", run: () => go("peripherals") },
+    { label: "Builds", hint: "four projects", group: "navigate", run: () => go("projects") },
     { label: "Shell", hint: "terminal", group: "navigate", run: () => go("shell") },
     { label: "Contact", hint: "get in touch", group: "navigate", run: () => go("contact") },
     {

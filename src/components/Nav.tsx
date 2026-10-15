@@ -1,10 +1,9 @@
-"use client";
 import { useState, useEffect } from "react";
 
 const SECTIONS = [
   { id: "pinout", label: "Pinout" },
+  { id: "projects", label: "Builds" },
   { id: "kernel-log", label: "Kernel log" },
-  { id: "peripherals", label: "Peripherals" },
   { id: "shell", label: "Shell" },
   { id: "contact", label: "Contact" },
 ];

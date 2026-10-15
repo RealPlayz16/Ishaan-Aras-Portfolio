@@ -1,4 +1,3 @@
-"use client";
 import { board, specs } from "../lib/content";
 
 export default function Hero({ booted }: { booted: boolean }) {
@@ -77,7 +76,7 @@ export default function Hero({ booted }: { booted: boolean }) {
           open a shell
         </a>
         <a
-          href="#peripherals"
+          href="#projects"
           className="mono"
           style={{
             border: "1px solid var(--line-2)",
@@ -96,7 +95,7 @@ export default function Hero({ booted }: { booted: boolean }) {
             e.currentTarget.style.background = "transparent";
           }}
         >
-          list peripherals
+          see the builds
         </a>
       </div>
 
