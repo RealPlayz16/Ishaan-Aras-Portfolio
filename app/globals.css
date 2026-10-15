@@ -1,160 +1,304 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,700;8..60,800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&family=Archivo:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
+/* ───────────────────────────────────────────────
+   Colour is taken from the hardware, not a theme.
+   A Raspberry Pi board in a dim room: dark green
+   substrate, gold-plated pads, the raspberry from
+   the logo, and the green ACT LED.
+   ─────────────────────────────────────────────── */
+
 :root {
-  --pcb: #061210;
-  --pcb-surface: #0C1F18;
-  --pcb-hover: #132E22;
-  --copper: #C7956D;
-  --copper-bright: #E0B48A;
-  --copper-dim: rgba(199,149,109,0.12);
-  --silk: #E8E4DC;
-  --silk-dim: rgba(232,228,220,0.7);
-  --muted: #5A7262;
-  --raspberry: #C51A4A;
-  --raspberry-glow: rgba(197,26,74,0.15);
-  --trace: rgba(199,149,109,0.08);
-  --border: #1A3324;
-  --glow: rgba(199,149,109,0.06);
+  --board:        #080B09;   /* substrate, near black with a green cast */
+  --board-2:      #0D120F;   /* raised surface */
+  --board-3:      #131A15;   /* hover / active surface */
+
+  --silk:         #E4E8E2;   /* silkscreen white */
+  --silk-2:       #9AA89D;   /* secondary text */
+  --silk-3:       #5E6D62;   /* tertiary, labels */
+
+  --raspberry:    #C51A4A;   /* the logo raspberry — primary action */
+  --raspberry-2:  #E0315F;
+  --act:          #75A928;   /* ACT LED green — live, ok, pass */
+  --gold:         #D9A842;   /* gold-plated pad / 3V3 rail */
+  --rail-5v:      #C0483C;   /* 5V rail red */
+  --gnd:          #4A5A4F;   /* ground */
+
+  --line:         #1B241E;   /* hairline borders */
+  --line-2:       #2A3830;   /* emphasised border */
+
+  --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --sans: 'Archivo', system-ui, -apple-system, sans-serif;
 }
 
-*,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
-  scroll-behavior: auto; /* Lenis handles smooth scroll */
-}
-
-html.lenis, html.lenis body {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
-  background: var(--pcb);
+  background: var(--board);
   color: var(--silk);
-  font-family: 'DM Sans', system-ui, sans-serif;
-  font-size: 16px;
+  font-family: var(--sans);
+  font-size: 15px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  padding-bottom: 2.25rem; /* clears the status bar */
 }
 
-::selection { background: var(--copper); color: var(--pcb) }
-a { color: inherit; text-decoration: none }
-button { font: inherit; color: inherit; border: none; background: none; cursor: pointer }
+::selection { background: var(--raspberry); color: #fff; }
 
-/* Reveal animations */
-.reveal {
-  opacity: 0;
-  transform: translateY(40px);
-}
-.reveal.active {
-  opacity: 1;
-  transform: translateY(0);
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+input { font: inherit; color: inherit; background: none; border: none; outline: none; }
+
+/* Focus: visible, and shaped like a probe landing on a pad */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
 }
 
-/* Cursor glow */
-.cursor-glow {
-  pointer-events: none;
-  position: fixed;
-  width: 600px;
-  height: 600px;
+/* ─── type roles ─── */
+
+.mono { font-family: var(--mono); }
+
+.sysline {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.01em;
+  color: var(--silk-3);
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--act);
+  margin-bottom: 0.6rem;
+}
+
+.section-title {
+  font-family: var(--mono);
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--silk);
+  margin-bottom: 0.5rem;
+}
+
+.section-note {
+  font-size: 0.9rem;
+  color: var(--silk-2);
+  max-width: 54ch;
+  line-height: 1.7;
+}
+
+/* ─── structure ─── */
+
+.shell {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section {
+  padding: 5.5rem 0;
+  border-top: 1px solid var(--line);
+}
+
+/* ─── the ACT LED ─── */
+
+.led {
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
-  transform: translate(-50%, -50%);
-  z-index: 0;
-  transition: opacity 0.3s;
+  background: var(--act);
+  box-shadow: 0 0 6px var(--act);
+  animation: act-blink 2.4s steps(1) infinite;
 }
 
-/* Magnetic button */
-.magnetic-btn {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+@keyframes act-blink {
+  0%, 46%   { opacity: 1; }
+  48%, 52%  { opacity: 0.25; }
+  54%, 88%  { opacity: 1; }
+  90%, 100% { opacity: 0.3; }
 }
 
-/* Scroll progress */
-.scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 2px;
-  background: var(--copper);
-  z-index: 100;
-  transform-origin: left;
+/* ─── terminal ─── */
+
+/* The terminal shows focus on its own frame, not as a box around the
+   input, which would read as a rendering fault inside a console. */
+.term-input:focus-visible { outline: none; }
+
+.term-frame:focus-within {
+  border-color: var(--act);
+  box-shadow: 0 0 0 1px var(--act);
 }
 
-/* Horizontal scroll section */
-.horizontal-scroll-wrapper {
+/* ─── nav ─── */
+
+/* display lives here, not inline, so the media query can win */
+.nav-sections {
   display: flex;
-  gap: 2rem;
-  will-change: transform;
+  gap: 1.15rem;
+  align-items: center;
 }
 
-/* Text split animation helper */
-.word {
+@media (max-width: 720px) {
+  .nav-sections { display: none; }
+}
+
+/* ─── terminal caret ─── */
+
+.caret {
   display: inline-block;
-  overflow: hidden;
-}
-.word-inner {
-  display: inline-block;
-}
-
-/* Project expand */
-.project-content {
-  overflow: hidden;
-  will-change: height;
+  width: 0.5em;
+  height: 1.05em;
+  background: var(--act);
+  vertical-align: text-bottom;
+  animation: caret 1.06s steps(1) infinite;
 }
 
-/* Link underline effect */
-.link-hover {
-  position: relative;
-}
-.link-hover::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: var(--copper);
-  transition: width 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-.link-hover:hover::after {
-  width: 100%;
+@keyframes caret {
+  0%, 50%   { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
-/* Noise texture overlay */
-.noise {
+/* ─── reveal on scroll (one shared, restrained transition) ─── */
+
+.rv {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.rv.in { opacity: 1; transform: none; }
+
+/* ─── boot overlay ─── */
+
+.boot {
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: 200;
+  background: var(--board);
+  padding: 2rem 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.75;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.boot.done {
+  opacity: 0;
   pointer-events: none;
-  opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 256px 256px;
+  transition: opacity 0.5s ease;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; }
-  .cursor-glow { display: none; }
-  *,*::before,*::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
+/* ─── command palette ─── */
+
+.palette-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(4, 7, 5, 0.72);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12vh 1rem 1rem;
+}
+
+/* Focus is unambiguous in a modal with a single input, so the caret
+   carries it rather than a box that reads as a rendering fault. */
+.palette input:focus-visible { outline: none; }
+
+.palette {
+  width: 100%;
+  max-width: 540px;
+  background: var(--board-2);
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+/* ─── status bar ─── */
+
+.statusbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0 1rem;
+  background: rgba(8, 11, 9, 0.94);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 0.67rem;
+  color: var(--silk-3);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.statusbar::-webkit-scrollbar { display: none; }
+
+/* ─── pin header ─── */
+
+.pinout-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.pin-readout {
+  position: sticky;
+  top: 5.5rem;
+}
+
+@media (max-width: 860px) {
+  .pinout-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+  .pin-readout {
+    position: static;
   }
 }
 
-@media (max-width: 768px) {
-  .cursor-glow { display: none; }
+.pin-pad {
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 22px;
+  border-radius: 2px;
+  border: 1px solid var(--line-2);
+  background: var(--board-2);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.pin-btn { display: block; width: 100%; }
+.pin-btn:hover .pin-pad { transform: scale(1.22); }
+
+/* ─── scrollbars ─── */
+
+*::-webkit-scrollbar { width: 9px; height: 9px; }
+*::-webkit-scrollbar-track { background: var(--board); }
+*::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 0; }
+*::-webkit-scrollbar-thumb:hover { background: var(--gnd); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .rv { opacity: 1; transform: none; transition: none; }
+  .led, .caret { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
